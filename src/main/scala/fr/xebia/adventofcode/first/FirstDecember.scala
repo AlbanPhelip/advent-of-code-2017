@@ -2,29 +2,45 @@ package fr.xebia.adventofcode.first
 
 import scala.util.{Failure, Success, Try}
 
+
 /**
   * http://adventofcode.com/2017/day/1
   */
-case class FirstDecember() {
+case class FirstDecember(integerList: Array[Int]) {
 
-  def compute(s: String): Int = {
-    val integerList: Array[Int] = Try(s.split("").map(_.toInt)) match {
-      case Success(l) => l
-      case Failure(_) => throw new IllegalArgumentException(s"The input $s is invalid, it should only be numbers")
-    }
+  def computeFirstPart(): Int = {
+    computeSumWithRoll(1)
+  }
 
-    val finalCountResult: CountAccumulator = integerList.foldLeft(CountAccumulator(integerList.last, 0))((countAccumulator, currentNumber) => {
-      if(currentNumber == countAccumulator.previousNumber)
-        CountAccumulator(currentNumber, countAccumulator.sum + currentNumber)
-      else
-        countAccumulator.copy(previousNumber = currentNumber)
-    })
+  def computeSecondPart(): Int = {
+    val length: Int = integerList.length
 
-    finalCountResult.sum
+    if(length % 2 == 1)
+      throw new IllegalArgumentException(s"The input has $length digits, it must have an even number of digit")
+
+    computeSumWithRoll(length / 2)
+  }
+
+  def computeSumWithRoll(splitIndex: Int): Int = {
+    val (left, right) = integerList.splitAt(splitIndex)
+
+    integerList
+      .zip(right ++ left)
+      .filter{ case (l, r) => l == r }
+      .map(_._1)
+      .sum
   }
 
 }
 object FirstDecember {
+
+  def apply(s: String): FirstDecember = {
+    val integerList: Array[Int] = Try(s.split("").map(_.toInt)) match {
+      case Success(l) => l
+      case Failure(_) => throw new IllegalArgumentException(s"The input $s is invalid, it should only be digits")
+    }
+    FirstDecember(integerList)
+  }
 
   def computeInput(): Unit = {
     val stringToCompute: String = "892195969991735837915273868729548694237967495115412399373194562526947585337233793" +
@@ -47,9 +63,12 @@ object FirstDecember {
       "6614247476377841382682922666339846756955574726719512952513891756178543644985593395153897399588195452112475336" +
       "9223898312843734771532342383282987422334196585128526526324291777689689492346231786335851551413876834969878"
 
-    val result: Int = FirstDecember().compute(stringToCompute)
+    val firstDecember = FirstDecember(stringToCompute)
+    val firstResult: Int = firstDecember.computeFirstPart()
+    val secondResult: Int = firstDecember.computeSecondPart()
 
-    println(s"Result for the 1st December : $result")
+    println(s"Result for the first part of the 1st December : $firstResult")
+    println(s"Result for the second part of the 1st December : $secondResult")
   }
 
 }

@@ -2,8 +2,6 @@ package fr.xebia.adventofcode
 
 import fr.xebia.adventofcode.first.FirstDecember
 
-import scala.util.{Failure, Success, Try}
-
 object AdventOfCode {
 
   def main(args: Array[String]): Unit = {
@@ -12,16 +10,11 @@ object AdventOfCode {
       sys.exit(1)
     }
 
-    val day: Int = Try(args.head.toInt) match {
-      case Success(d) => d
-      case Failure(_) =>
-        println(s"Error, ${args.head} is not valid. The day passed as parameter must be a number")
-        sys.exit(1)
-    }
+    val day: String = args.head
 
     day match {
-      case 1 => FirstDecember.computeInput()
-      case _ => println(s"Error, day number $day is not supported. Only the first December id supported")
+      case "1" => FirstDecember.computeInput()
+      case _ => println(s"Error, argument $day is invalid. It must be a number between 1 and 1")
     }
   }
 
