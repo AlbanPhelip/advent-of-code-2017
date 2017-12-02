@@ -35,11 +35,10 @@ case class FirstDecember(integerList: Array[Int]) {
 object FirstDecember {
 
   def apply(s: String): FirstDecember = {
-    val integerList: Array[Int] = Try(s.split("").map(_.toInt)) match {
-      case Success(l) => l
+    Try(s.split("").map(_.toInt)) match {
+      case Success(l) => FirstDecember(l)
       case Failure(_) => throw new IllegalArgumentException(s"The input $s is invalid, it should only be digits")
     }
-    FirstDecember(integerList)
   }
 
   def computeInput(): Unit = {

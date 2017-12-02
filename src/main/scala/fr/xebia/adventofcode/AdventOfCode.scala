@@ -1,6 +1,7 @@
 package fr.xebia.adventofcode
 
 import fr.xebia.adventofcode.first.FirstDecember
+import fr.xebia.adventofcode.second.SecondDecember
 
 object AdventOfCode {
 
@@ -14,7 +15,8 @@ object AdventOfCode {
 
     day match {
       case "1" => FirstDecember.computeInput()
-      case _ => println(s"Error, argument $day is invalid. It must be a number between 1 and 1")
+      case "2" => SecondDecember.computeInput()
+      case _ => println(s"Error, argument $day is invalid. It must be a number between 1 and 2")
     }
   }
 
